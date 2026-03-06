@@ -82,6 +82,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
 
     internal var _tapGestureRecognizer: UITapGestureRecognizer!
     internal var _doubleTapGestureRecognizer: UITapGestureRecognizer!
+    internal var _pinchGestureRecognizer: UIPinchGestureRecognizer!
     internal var _panGestureRecognizer: UIPanGestureRecognizer!
     
     /// flag that indicates if a custom viewport offset has been set
@@ -124,6 +125,12 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         
         _doubleTapGestureRecognizer.isEnabled = _doubleTapToZoomEnabled
         _panGestureRecognizer.isEnabled = _dragXEnabled || _dragYEnabled
+        
+        _pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(BarLineChartViewBase.pinchGestureRecognized(_:)))
+        _pinchGestureRecognizer.delegate = self
+        self.addGestureRecognizer(_pinchGestureRecognizer)
+        _pinchGestureRecognizer.isEnabled = _pinchZoomEnabled || _scaleXEnabled || _scaleYEnabled
+
     }
     
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?)
@@ -567,6 +574,96 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         }
     }
     
+    @objc private func pinchGestureRecognized(_ recognizer: UIPinchGestureRecognizer)
+    {
+        if recognizer.state == UIGestureRecognizer.State.began
+        {
+            stopDeceleration()
+            
+            if data !== nil &&
+                (_pinchZoomEnabled || _scaleXEnabled || _scaleYEnabled)
+            {
+                _isScaling = true
+                
+                if _pinchZoomEnabled
+                {
+                    _gestureScaleAxis = .both
+                }
+                else
+                {
+                    let x = abs(recognizer.location(in: self).x - recognizer.location(ofTouch: 1, in: self).x)
+                    let y = abs(recognizer.location(in: self).y - recognizer.location(ofTouch: 1, in: self).y)
+                    
+                    if _scaleXEnabled != _scaleYEnabled
+                    {
+                        _gestureScaleAxis = _scaleXEnabled ? .x : .y
+                    }
+                    else
+                    {
+                        _gestureScaleAxis = x > y ? .x : .y
+                    }
+                }
+            }
+        }
+        else if recognizer.state == UIGestureRecognizer.State.ended ||
+                    recognizer.state == UIGestureRecognizer.State.cancelled
+        {
+            if _isScaling
+            {
+                _isScaling = false
+                
+                // Range might have changed, which means that Y-axis labels could have changed in size, affecting Y-axis size. So we need to recalculate offsets.
+                calculateOffsets()
+                setNeedsDisplay()
+            }
+        }
+        else if recognizer.state == UIGestureRecognizer.State.changed
+        {
+            let isZoomingOut = (recognizer.scale < 1)
+            var canZoomMoreX = isZoomingOut ? viewPortHandler.canZoomOutMoreX : viewPortHandler.canZoomInMoreX
+            var canZoomMoreY = isZoomingOut ? viewPortHandler.canZoomOutMoreY : viewPortHandler.canZoomInMoreY
+            
+            if _isScaling
+            {
+                canZoomMoreX = canZoomMoreX && _scaleXEnabled && (_gestureScaleAxis == .both || _gestureScaleAxis == .x)
+                canZoomMoreY = canZoomMoreY && _scaleYEnabled && (_gestureScaleAxis == .both || _gestureScaleAxis == .y)
+                if canZoomMoreX || canZoomMoreY
+                {
+                    var location = recognizer.location(in: self)
+                    location.x = location.x - viewPortHandler.offsetLeft
+                    
+                    if isTouchInverted()
+                    {
+                        location.y = -(location.y - viewPortHandler.offsetTop)
+                    }
+                    else
+                    {
+                        location.y = -(viewPortHandler.chartHeight - location.y - viewPortHandler.offsetBottom)
+                    }
+                    
+                    let scaleX = canZoomMoreX ? recognizer.scale : 1.0
+                    let scaleY = canZoomMoreY ? recognizer.scale : 1.0
+                    
+                    var matrix = CGAffineTransform(translationX: location.x, y: location.y)
+                    matrix = matrix.scaledBy(x: scaleX, y: scaleY)
+                    matrix = matrix.translatedBy(x: -location.x, y: -location.y)
+                    
+                    matrix = viewPortHandler.touchMatrix.concatenating(matrix)
+                    
+                    viewPortHandler.refresh(newMatrix: matrix, chart: self, invalidate: true)
+
+                    if delegate !== nil
+                    {
+                        delegate?.chartScaled(self, scaleX: scaleX, scaleY: scaleY)
+                    }
+                }
+                
+                recognizer.scale = 1.0
+            }
+        }
+    }
+
+    
     @objc private func panGestureRecognized(_ recognizer: UIPanGestureRecognizer)
     {
         if recognizer.state == UIGestureRecognizer.State.began && recognizer.numberOfTouches > 0
@@ -788,7 +885,14 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         }
         else
         {
-            
+            if gestureRecognizer == _pinchGestureRecognizer
+            {
+                if data === nil || (!_pinchZoomEnabled && !_scaleXEnabled && !_scaleYEnabled)
+                {
+                    return false
+                }
+            }
+
         }
         
         return true
@@ -806,6 +910,11 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
     
     open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool
     {
+        if ((gestureRecognizer is UIPinchGestureRecognizer && otherGestureRecognizer is UIPanGestureRecognizer) ||
+            (gestureRecognizer is UIPanGestureRecognizer && otherGestureRecognizer is UIPinchGestureRecognizer))
+        {
+            return true
+        }
         
         if gestureRecognizer is UIPanGestureRecognizer,
             otherGestureRecognizer is UIPanGestureRecognizer,
@@ -1466,6 +1575,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         {
             _scaleXEnabled = enabled
             _scaleYEnabled = enabled
+            _pinchGestureRecognizer.isEnabled = _pinchZoomEnabled || _scaleXEnabled || _scaleYEnabled
         }
     }
     
@@ -1480,6 +1590,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             if _scaleXEnabled != newValue
             {
                 _scaleXEnabled = newValue
+                _pinchGestureRecognizer.isEnabled = _pinchZoomEnabled || _scaleXEnabled || _scaleYEnabled
             }
         }
     }
@@ -1495,6 +1606,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             if _scaleYEnabled != newValue
             {
                 _scaleYEnabled = newValue
+                _pinchGestureRecognizer.isEnabled = _pinchZoomEnabled || _scaleXEnabled || _scaleYEnabled
             }
         }
     }
@@ -1629,6 +1741,7 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
             if _pinchZoomEnabled != newValue
             {
                 _pinchZoomEnabled = newValue
+                _pinchGestureRecognizer.isEnabled = _pinchZoomEnabled || _scaleXEnabled || _scaleYEnabled
             }
         }
     }
