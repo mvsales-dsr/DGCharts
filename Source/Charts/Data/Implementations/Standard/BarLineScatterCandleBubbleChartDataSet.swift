@@ -21,4 +21,13 @@ open class BarLineScatterCandleBubbleChartDataSet: ChartDataSet, BarLineScatterC
     open var highlightLineWidth = CGFloat(0.5)
     open var highlightLineDashPhase = CGFloat(0.0)
     open var highlightLineDashLengths: [CGFloat]?
+    
+    open override func copy() -> Self {
+        let copy = super.copy()
+        copy.highlightColor = highlightColor
+        copy.highlightLineWidth = highlightLineWidth
+        copy.highlightLineDashPhase = highlightLineDashPhase
+        copy.highlightLineDashLengths = highlightLineDashLengths
+        return copy
+    }
 }

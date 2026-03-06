@@ -30,6 +30,10 @@ open class RadarChartDataEntry: ChartDataEntry
         self.data = data
     }
     
+    public required init(x: Double, y: Double) {
+        super.init(x: x, y: y)
+    }
+    
     // MARK: Data property accessors
     
     open var value: Double

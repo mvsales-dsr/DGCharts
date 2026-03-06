@@ -37,4 +37,11 @@ open class LineScatterCandleRadarChartDataSet: BarLineScatterCandleBubbleChartDa
         drawHorizontalHighlightIndicatorEnabled = enabled
         drawVerticalHighlightIndicatorEnabled = enabled
     }
+    
+    open override func copy() -> Self {
+        let copy = super.copy()
+        copy.drawHorizontalHighlightIndicatorEnabled = drawHorizontalHighlightIndicatorEnabled
+        copy.drawVerticalHighlightIndicatorEnabled = drawVerticalHighlightIndicatorEnabled
+        return copy
+    }
 }

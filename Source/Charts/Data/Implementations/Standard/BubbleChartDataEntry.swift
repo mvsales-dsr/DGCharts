@@ -61,4 +61,14 @@ open class BubbleChartDataEntry: ChartDataEntry
         self.icon = icon
         self.data = data
     }
+    
+    public required init(x: Double, y: Double) {
+        super.init(x: x, y: y)
+    }
+    
+    open override func copy() -> Self {
+        let copy = super.copy()
+        copy.size = size
+        return copy
+    }
 }
