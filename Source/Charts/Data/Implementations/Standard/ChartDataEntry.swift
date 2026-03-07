@@ -11,10 +11,16 @@
 
 import UIKit
 
-open class ChartDataEntry: ChartDataEntryBase
+open class ChartDataEntry: ChartDataEntryBase, NSCopying
 {
     /// the x value
     open var x = 0.0
+    
+    
+    public required init()
+    {
+        super.init()
+    }
     
     /// An Entry represents one single entry in the chart.
     ///
@@ -75,10 +81,25 @@ open class ChartDataEntry: ChartDataEntryBase
         return "ChartDataEntry, x: \(x), y \(y)"
     }
     
-    public static func == (lhs: ChartDataEntry, rhs: ChartDataEntry) -> Bool {
-        if lhs === rhs {
+    open override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? ChartDataEntry else { return false }
+        
+        if self === object
+        {
             return true
         }
-        return lhs.y == rhs.y && lhs.x == rhs.x
+        
+        return self.y == object.y && self.x == object.x
+    }
+    
+    open func copy(with zone: NSZone? = nil) -> Any
+    {
+        let copy = type(of: self).init()
+        
+        copy.x = x
+        copy.y = y
+        copy.data = data
+        
+        return copy
     }
 }

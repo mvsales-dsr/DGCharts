@@ -13,6 +13,10 @@ import Foundation
 
 open class RadarChartDataEntry: ChartDataEntry
 {
+    public required init()
+    {
+        super.init()
+    }
 
     /// - Parameters:
     ///   - value: The value on the y-axis.
@@ -36,5 +40,12 @@ open class RadarChartDataEntry: ChartDataEntry
     {
         get { return y }
         set { y = newValue }
+    }
+    
+    open override func copy(with zone: NSZone? = nil) -> Any
+    {
+        let copy = super.copy(with: zone) as! RadarChartDataEntry
+        
+        return copy
     }
 }

@@ -11,7 +11,7 @@
 
 import UIKit
 
-open class ChartData: ExpressibleByArrayLiteral
+open class ChartData: NSObject, ExpressibleByArrayLiteral
 {
 
     public internal(set) var xMax = -Double.greatestFiniteMagnitude
@@ -41,17 +41,19 @@ open class ChartData: ExpressibleByArrayLiteral
     
     var _dataSets = [Element]()
     
-    public required init()
+    public override required init()
     {
     }
 
     public required init(arrayLiteral elements: Element...)
     {
+        super.init()
         self.dataSets = elements
     }
 
     public init(dataSets: [Element])
     {
+        super.init()
         self.dataSets = dataSets
     }
     
@@ -565,8 +567,8 @@ extension ChartData
     }
 }
 
-extension ChartData: Equatable {
+/*extension ChartData: Equatable {
     public static func == (lhs: ChartData, rhs: ChartData) -> Bool {
         return lhs === rhs
     }
-}
+}*/

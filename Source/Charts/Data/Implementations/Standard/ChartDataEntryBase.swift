@@ -11,7 +11,7 @@
 
 import UIKit
 
-open class ChartDataEntryBase
+open class ChartDataEntryBase: NSObject
 {
     /// the y value
     open var y = 0.0
@@ -21,6 +21,11 @@ open class ChartDataEntryBase
     
     /// optional icon image
     open var icon: UIImage?
+    
+    public override required init()
+    {
+        super.init()
+    }
     
     /// An Entry represents one single entry in the chart.
     ///
@@ -69,17 +74,18 @@ open class ChartDataEntryBase
 
     // MARK: NSObject
     
-    var description: String
+    open override var description: String
     {
         return "ChartDataEntryBase, y \(y)"
     }
 }
 
-extension ChartDataEntryBase: Equatable {
-    public static func == (lhs: ChartDataEntryBase, rhs: ChartDataEntryBase) -> Bool {
-        if lhs === rhs {
+extension ChartDataEntryBase {
+    open override func isEqual(_ object: Any?) -> Bool {
+        guard let object = object as? ChartDataEntryBase else { return false }
+        if self === object {
             return true
         }
-        return lhs.y == rhs.y
+        return self.y == object.y
     }
 }

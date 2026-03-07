@@ -13,6 +13,10 @@ import UIKit
 
 open class PieChartDataEntry: ChartDataEntry
 {
+    public required init()
+    {
+        super.init()
+    }
 
     /// - Parameters:
     ///   - value: The value on the y-axis
@@ -100,5 +104,12 @@ open class PieChartDataEntry: ChartDataEntry
     {
         get { return y }
         set { y = newValue }
+    }
+    
+    open override func copy(with zone: NSZone? = nil) -> Any
+    {
+        let copy = super.copy(with: zone) as! PieChartDataEntry
+        copy.label = label
+        return copy
     }
 }

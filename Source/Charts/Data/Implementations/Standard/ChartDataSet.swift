@@ -375,6 +375,19 @@ open class ChartDataSet: ChartBaseDataSet
     {
         removeAll(keepingCapacity: true)
     }
+    
+    open override func copy(with zone: NSZone? = nil) -> Any
+    {
+        let copy = super.copy(with: zone) as! ChartDataSet
+        
+        copy.entries = entries
+        copy._yMax = _yMax
+        copy._yMin = _yMin
+        copy._xMax = _xMax
+        copy._xMin = _xMin
+
+        return copy
+    }
 }
 
 // MARK: MutableCollection

@@ -11,7 +11,7 @@
 
 import UIKit
 
-open class ChartBaseDataSet: ChartDataSetProtocol
+open class ChartBaseDataSet: ChartDataSetProtocol, NSCopying
 {
     public required init() {
         
@@ -377,5 +377,31 @@ open class ChartBaseDataSet: ChartDataSetProtocol
         return (0..<entryCount).reduce(description + ":") {
             "\($0)\n\(self.entryForIndex($1)?.description ?? "")"
         }
+    }
+    
+    // MARK: - NSCopying
+        
+    open func copy(with zone: NSZone? = nil) -> Any
+    {
+        let copy = type(of: self).init()
+        
+        copy.colors = colors
+        copy.valueColors = valueColors
+        copy.label = label
+        copy.axisDependency = axisDependency
+        copy.highlightEnabled = highlightEnabled
+        copy.valueFormatter = valueFormatter
+        copy.valueFont = valueFont
+        copy.form = form
+        copy.formSize = formSize
+        copy.formLineWidth = formLineWidth
+        copy.formLineDashPhase = formLineDashPhase
+        copy.formLineDashLengths = formLineDashLengths
+        copy.drawValuesEnabled = drawValuesEnabled
+        copy.drawIconsEnabled = drawIconsEnabled
+        copy.iconsOffset = iconsOffset
+        copy.visible = visible
+        
+        return copy
     }
 }
