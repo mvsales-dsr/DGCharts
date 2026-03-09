@@ -61,13 +61,4 @@ open class ScatterChartDataSet: LineScatterCandleRadarChartDataSet, ScatterChart
         case .chevronDown: return ChevronDownShapeRenderer()
         }
     }
-    
-    open override func copy() -> Self {
-        let copy = super.copy()
-        copy.scatterShapeSize = scatterShapeSize
-        copy.scatterShapeHoleRadius = scatterShapeHoleRadius
-        copy.scatterShapeHoleColor = scatterShapeHoleColor
-        copy.shapeRenderer = shapeRenderer
-        return copy
-    }
 }

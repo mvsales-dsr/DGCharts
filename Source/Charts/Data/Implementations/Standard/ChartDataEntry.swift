@@ -21,7 +21,7 @@ open class ChartDataEntry: ChartDataEntryBase
     /// - Parameters:
     ///   - x: the x value
     ///   - y: the y value (the actual value of the entry)
-    public required init(x: Double, y: Double)
+    public init(x: Double, y: Double)
     {
         super.init(y: y)
         self.x = x
@@ -80,11 +80,5 @@ open class ChartDataEntry: ChartDataEntryBase
             return true
         }
         return lhs.y == rhs.y && lhs.x == rhs.x
-    }
-    
-    open func copy() -> Self {
-        let copy = Self(x: self.x, y: self.y)
-        copy.data = self.data
-        return copy
     }
 }

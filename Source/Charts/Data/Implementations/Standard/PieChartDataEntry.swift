@@ -92,10 +92,6 @@ open class PieChartDataEntry: ChartDataEntry
         self.data = data
     }
     
-    public required init(x: Double, y: Double) {
-        super.init(x: x, y: y)
-    }
-    
     // MARK: Data property accessors
     
     open var label: String?
@@ -104,11 +100,5 @@ open class PieChartDataEntry: ChartDataEntry
     {
         get { return y }
         set { y = newValue }
-    }
-    
-    open override func copy() -> Self {
-        let copy = super.copy()
-        copy.label = self.label
-        return copy
     }
 }

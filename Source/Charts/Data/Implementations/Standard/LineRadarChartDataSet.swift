@@ -66,14 +66,4 @@ open class LineRadarChartDataSet: LineScatterCandleRadarChartDataSet, LineRadarC
     {
         return drawFilledEnabled
     }
-    
-    open override func copy() -> Self {
-        let copy = super.copy()
-        copy.fill = fill
-        copy.fillAlpha = fillAlpha
-        copy._fillColor = _fillColor
-        copy._lineWidth = _lineWidth
-        copy.drawFilledEnabled = drawFilledEnabled
-        return copy
-    }
 }

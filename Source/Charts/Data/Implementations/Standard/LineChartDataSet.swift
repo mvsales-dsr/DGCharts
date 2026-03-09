@@ -13,6 +13,7 @@ import UIKit
 
 open class LineChartDataSet: LineRadarChartDataSet, LineChartDataSetProtocol
 {
+    @objc(LineChartMode)
     public enum Mode: Int
     {
         case linear
@@ -150,22 +151,5 @@ open class LineChartDataSet: LineRadarChartDataSet, LineChartDataSetProtocol
         {
             _fillFormatter = newValue ?? DefaultFillFormatter()
         }
-    }
-    
-    open override func copy() -> Self {
-        let copy = super.copy()
-        copy.circleColors = circleColors
-        copy.circleHoleColor = circleHoleColor
-        copy.circleRadius = circleRadius
-        copy.circleHoleRadius = circleHoleRadius
-        copy.cubicIntensity = cubicIntensity
-        copy.lineDashPhase = lineDashPhase
-        copy.lineDashLengths = lineDashLengths
-        copy.lineCapType = lineCapType
-        copy.drawCirclesEnabled = drawCirclesEnabled
-        copy.drawCircleHoleEnabled = drawCircleHoleEnabled
-        copy.mode = mode
-        copy._fillFormatter = _fillFormatter
-        return copy
     }
 }

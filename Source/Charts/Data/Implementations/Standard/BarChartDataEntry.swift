@@ -26,7 +26,7 @@ open class BarChartDataEntry: ChartDataEntry
     private var _positiveSum: Double = 0.0
     
     /// Constructor for normal bars (not stacked).
-    public required init(x: Double, y: Double)
+    public override init(x: Double, y: Double)
     {
         super.init(x: x, y: y)
     }
@@ -193,14 +193,5 @@ open class BarChartDataEntry: ChartDataEntry
     private static func calcSum(values: [Double]) -> Double
     {
         values.reduce(into: 0, +=)
-    }
-    
-    open override func copy() -> Self {
-        let copy = super.copy()
-        copy._yVals = self._yVals
-        copy.y = self.y
-        copy._negativeSum = _negativeSum
-        copy._positiveSum = _positiveSum
-        return copy
     }
 }

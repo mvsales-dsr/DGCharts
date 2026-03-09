@@ -378,25 +378,4 @@ open class ChartBaseDataSet: ChartDataSetProtocol
             "\($0)\n\(self.entryForIndex($1)?.description ?? "")"
         }
     }
-    
-    open func copy() -> Self {
-        let copy = Self()
-        copy.colors = self.colors
-        copy.valueColors = self.valueColors
-        copy.label = self.label
-        copy.axisDependency = self.axisDependency
-        copy.highlightEnabled = self.highlightEnabled
-        copy.valueFormatter = self.valueFormatter
-        copy.valueFont = self.valueFont
-        copy.form = self.form
-        copy.formSize = self.formSize
-        copy.formLineWidth = self.formLineWidth
-        copy.formLineDashPhase = self.formLineDashPhase
-        copy.formLineDashLengths = self.formLineDashLengths
-        copy.drawValuesEnabled = self.drawValuesEnabled
-        copy.drawIconsEnabled = self.drawIconsEnabled
-        copy.iconsOffset = self.iconsOffset
-        copy.visible = self.visible
-        return copy
-    }
 }

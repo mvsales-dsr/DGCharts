@@ -120,7 +120,7 @@ open class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, BarChartData
     }
     
     /// The overall entry count, including counting each stack-value individually
-    open var entryCountStacks: Int
+    @objc open var entryCountStacks: Int
     {
         return _entryCountStacks
     }
@@ -141,17 +141,4 @@ open class BarChartDataSet: BarLineScatterCandleBubbleChartDataSet, BarChartData
 
     /// the alpha value (transparency) that is used for drawing the highlight indicator bar. min = 0.0 (fully transparent), max = 1.0 (fully opaque)
     open var highlightAlpha = CGFloat(120.0 / 255.0)
-    
-    open override func copy() -> Self {
-        let copy = super.copy()
-        copy._stackSize = _stackSize
-        copy._entryCountStacks = _entryCountStacks
-        copy.stackLabels = stackLabels
-
-        copy.barShadowColor = barShadowColor
-        copy.barBorderWidth = barBorderWidth
-        copy.barBorderColor = barBorderColor
-        copy.highlightAlpha = highlightAlpha
-        return copy
-    }
 }

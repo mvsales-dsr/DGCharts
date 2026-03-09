@@ -54,10 +54,6 @@ open class CandleChartDataEntry: ChartDataEntry
         self.data = data
     }
     
-    public required init(x: Double, y: Double) {
-        super.init(x: x, y: y)
-    }
-    
     /// The overall range (difference) between shadow-high and shadow-low.
     open var shadowRange: Double
     {
@@ -81,14 +77,5 @@ open class CandleChartDataEntry: ChartDataEntry
         {
             super.y = (high + low) / 2.0
         }
-    }
-    
-    open override func copy() -> Self {
-        let copy = super.copy()
-        copy.high = high
-        copy.low = low
-        copy.open = open
-        copy.close = close
-        return copy
     }
 }

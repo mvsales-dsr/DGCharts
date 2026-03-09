@@ -37,14 +37,4 @@ open class BubbleChartDataSet: BarLineScatterCandleBubbleChartDataSet, BubbleCha
     
     /// Sets/gets the width of the circle that surrounds the bubble when highlighted
     open var highlightCircleWidth: CGFloat = 2.5
-    
-    open override func copy() -> Self {
-        let copy = super.copy()
-        copy._xMin = _xMin
-        copy._xMax = _xMax
-        copy._maxSize = _maxSize
-        copy.normalizeSizeEnabled = normalizeSizeEnabled
-        copy.highlightCircleWidth = highlightCircleWidth
-        return copy
-    }
 }
