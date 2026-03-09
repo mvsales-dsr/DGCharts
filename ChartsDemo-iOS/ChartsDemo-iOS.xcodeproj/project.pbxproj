@@ -386,7 +386,7 @@
 				TargetAttributes = {
 					225B361C1F6EB9A50005B3D5 = {
 						CreatedOnToolsVersion = 9.0;
-						DevelopmentTeam = YB4Q82L4AF;
+						DevelopmentTeam = 57HXS3Z9D5;
 						LastSwiftMigration = 1150;
 					};
 				};
@@ -539,12 +539,12 @@
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = YB4Q82L4AF;
+				DEVELOPMENT_TEAM = 57HXS3Z9D5;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mvpsales.charts;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mvsales-dsr.charts";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -570,12 +570,12 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = YB4Q82L4AF;
+				DEVELOPMENT_TEAM = 57HXS3Z9D5;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "$(SRCROOT)/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.mvpsales.charts;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.mvsales-dsr.charts";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
