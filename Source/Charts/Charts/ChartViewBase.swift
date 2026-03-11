@@ -304,12 +304,6 @@ open class ChartViewBase: UIView, ChartDataProvider, AnimatorDelegate
                          align: description.textAlign,
                          attributes: attrs)
     }
-    
-    // MARK: - Accessibility
-
-    open override func accessibilityChildren() -> [Any]? {
-        return renderer?.accessibleChartElements
-    }
 
     // MARK: - Highlighting
 

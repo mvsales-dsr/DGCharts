@@ -11,9 +11,9 @@
 
 import UIKit
 
-open class ChartBaseDataSet: ChartDataSetProtocol, NSCopying
+open class ChartBaseDataSet: NSObject, ChartDataSetProtocol, NSCopying
 {
-    public required init() {
+    public required override init() {
         
         // default color
         colors.append(UIColor(red: 140.0/255.0, green: 234.0/255.0, blue: 255.0/255.0, alpha: 1.0))
@@ -367,12 +367,12 @@ open class ChartBaseDataSet: ChartDataSetProtocol, NSCopying
     
     // MARK: - NSObject
     
-    var description: String
+    open override var description: String
     {
         return String(format: "%@, label: %@, %i entries", arguments: [NSStringFromClass(type(of: self)), self.label ?? "", self.entryCount])
     }
     
-    var debugDescription: String
+    open override var debugDescription: String
     {
         return (0..<entryCount).reduce(description + ":") {
             "\($0)\n\(self.entryForIndex($1)?.description ?? "")"

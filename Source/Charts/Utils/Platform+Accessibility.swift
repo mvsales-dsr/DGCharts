@@ -64,8 +64,44 @@ open class NSUIAccessibilityElement: UIAccessibilityElement
     }
 }
 
-extension UIView
+extension ChartViewBase
 {
+    // MARK: - Accessibility
+    
+    /// An array of accessibilityElements that is used to implement UIAccessibilityContainer internally.
+    /// Subclasses **MUST** override this with an array of such elements.
+    @objc open func accessibilityChildren() -> [Any]?
+    {
+        return renderer?.accessibleChartElements
+    }
+
+    public final override var isAccessibilityElement: Bool
+    {
+        get { return false } // Return false here, so we can make individual elements accessible
+        set { }
+    }
+
+    open override func accessibilityElementCount() -> Int
+    {
+        return accessibilityChildren()?.count ?? 0
+    }
+
+    open override func accessibilityElement(at index: Int) -> Any?
+    {
+        return accessibilityChildren()?[index]
+    }
+
+    open override func index(ofAccessibilityElement element: Any) -> Int
+    {
+        guard let axElement = element as? NSUIAccessibilityElement else { return NSNotFound }
+        return (accessibilityChildren() as? [NSUIAccessibilityElement])?.firstIndex(of: axElement) ?? NSNotFound
+    }
+}
+
+extension MarkerView
+{
+    // MARK: - Accessibility
+    
     /// An array of accessibilityElements that is used to implement UIAccessibilityContainer internally.
     /// Subclasses **MUST** override this with an array of such elements.
     @objc open func accessibilityChildren() -> [Any]?
